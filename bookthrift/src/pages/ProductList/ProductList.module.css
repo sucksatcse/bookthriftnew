@@ -1,0 +1,75 @@
+.productListPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 5%;
+}
+
+.heading {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: #2c3e50;
+}
+
+.categoryFilter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.categoryFilter button {
+  background: #fff;
+  border: 1px solid #f39c12;
+  color: #2c3e50;
+  padding: 8px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+
+.categoryFilter .activeCategory,
+.categoryFilter button:hover {
+  background: #f39c12;
+  color: #fff;
+  border: 1px solid #f39c12;
+}
+
+.bookGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 0 0;
+  gap: 10px;
+}
+
+.pagination button {
+  background: #fff;
+  border: 1px solid #f39c12;
+  color: #2c3e50;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pagination button:hover,
+.pagination .activePage {
+  background: #f39c12;
+  color: #fff;
+  border: 1px solid #f39c12;
+}
+
+.activePage {
+  background: #f39c12;
+  color: #fff;
+  border: 1px solid #f39c12;
+}
