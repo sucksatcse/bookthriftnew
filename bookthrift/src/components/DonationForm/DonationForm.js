@@ -1,78 +1,107 @@
-import React, { useState } from 'react';
-import styles from './DonationForm.module.css';
+import React, { useState } from "react";
+import API from "../../services/api";
 
-const DonationForm = () => {
+const DonationForm = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    amount: '',
-    message: ''
+    name: "",
+    email: "",
+    bookTitle: "",
+    amount: "", // added amount field
   });
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // For now, just alert the data
-    alert(`Thank you, ${formData.name}, for your donation of ${formData.amount} টাকা!`);
-    // Reset form
-    setFormData({ name: '', email: '', amount: '', message: '' });
+
+    if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
+      alert("Please enter a valid donation amount greater than 0.");
+      return;
+    }
+
+    try {
+      // Convert amount to number
+      const payload = { ...formData, amount: Number(formData.amount) };
+
+      await API.post("/donations", payload);
+      alert("✅ Donation submitted successfully!");
+
+      setFormData({ name: "", email: "", bookTitle: "", amount: "" }); // reset form
+      if (onSuccess) onSuccess();
+    } catch (error) {
+      console.error("Donation submission failed:", error);
+      alert("❌ Failed to submit donation");
+    }
   };
 
   return (
-    <form className={styles.donationForm} onSubmit={handleSubmit}>
-      <h2>দান ফর্ম</h2>
-
-      <label htmlFor="name">নাম</label>
+    <form onSubmit={handleSubmit} style={styles.form}>
       <input
         type="text"
-        id="name"
         name="name"
-        placeholder="আপনার নাম লিখুন"
+        placeholder="Your Name"
         value={formData.name}
         onChange={handleChange}
+        style={styles.input}
         required
       />
-
-      <label htmlFor="email">ইমেইল</label>
       <input
         type="email"
-        id="email"
         name="email"
-        placeholder="আপনার ইমেইল লিখুন"
+        placeholder="Your Email"
         value={formData.email}
         onChange={handleChange}
+        style={styles.input}
         required
       />
-
-      <label htmlFor="amount">দান পরিমাণ</label>
+      <input
+        type="text"
+        name="bookTitle"
+        placeholder="Book Title"
+        value={formData.bookTitle}
+        onChange={handleChange}
+        style={styles.input}
+        required
+      />
       <input
         type="number"
-        id="amount"
         name="amount"
-        placeholder="টাকার পরিমাণ লিখুন"
+        placeholder="Donation Amount"
         value={formData.amount}
         onChange={handleChange}
+        style={styles.input}
         required
         min="1"
       />
-
-      <label htmlFor="message">বার্তা (ঐচ্ছিক)</label>
-      <textarea
-        id="message"
-        name="message"
-        placeholder="আপনার বার্তা লিখুন"
-        value={formData.message}
-        onChange={handleChange}
-        rows="4"
-      />
-
-      <button type="submit">দান করুন</button>
+      <button type="submit" style={styles.button}>Donate</button>
     </form>
   );
+};
+
+const styles = {
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "400px",
+    margin: "auto",
+    gap: "10px",
+  },
+  input: {
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+  },
+  button: {
+    padding: "10px",
+    backgroundColor: "#007BFF",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
 };
 
 export default DonationForm;
