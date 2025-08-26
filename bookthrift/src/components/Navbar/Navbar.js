@@ -1,15 +1,21 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { FaBook, FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
+import { useCart } from '../../context/CartContext';
 import styles from './Navbar.module.css';
 
 function Navbar() {
+  const { totalQty } = useCart();
+
   return (
     <header className={styles.header}>
+      {/* ─── brand logo ─── */}
       <div className={styles.logo}>
         <FaBook className={styles.bookIcon} />
         <span className={styles.logoText}>বুক থ্রিফট</span>
       </div>
+
+      {/* ─── main nav ─── */}
       <nav className={styles.nav}>
         <ul>
           <li>
@@ -47,15 +53,22 @@ function Navbar() {
           </li>
         </ul>
       </nav>
+
+      {/* ─── search + icons ─── */}
       <div className={styles.searchCart}>
         <div className={styles.searchBox}>
           <input type="text" placeholder="বই খুঁজুন..." />
-          <button><FaSearch /></button>
+          <button>
+            <FaSearch />
+          </button>
         </div>
-        <div className={styles.userActions}>
-          <button><FaShoppingCart /></button>
 
-          {/* ✅ Changed from button to NavLink */}
+        <div className={styles.userActions}>
+          <Link to="/cart" className={styles.cartBtn} aria-label="Cart">
+            <FaShoppingCart />
+            {totalQty > 0 && <span className={styles.badge}>{totalQty}</span>}
+          </Link>
+
           <NavLink to="/login" className={styles.userButton}>
             <FaUser />
           </NavLink>
