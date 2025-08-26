@@ -61,7 +61,7 @@
 }
 
 .featureCard {
-  background: white;
+  background: rgb(255, 255, 255);
   padding: 30px 20px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -107,7 +107,7 @@
 }
 
 .bookCard {
-  background: white;
+  background: rgb(255, 255, 255);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -131,7 +131,7 @@
 }
 
 .author {
-  color: #7f8c8d;
+  color: #0c0c0c;
   font-size: 0.9rem;
   margin-bottom: 5px;
 }
