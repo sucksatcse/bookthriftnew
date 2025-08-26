@@ -109,3 +109,13 @@
   color: #f39c12 !important;
   border-bottom: 2px solid #f39c12;
 }
+
+.userButton {
+  color: white;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.userButton:hover {
+  color: #f39c12;
+}
