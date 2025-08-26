@@ -54,7 +54,11 @@ function Navbar() {
         </div>
         <div className={styles.userActions}>
           <button><FaShoppingCart /></button>
-          <button><FaUser /></button>
+
+          {/* ✅ Changed from button to NavLink */}
+          <NavLink to="/login" className={styles.userButton}>
+            <FaUser />
+          </NavLink>
         </div>
       </div>
     </header>
