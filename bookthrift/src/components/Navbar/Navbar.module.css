@@ -1,3 +1,4 @@
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -11,21 +12,19 @@
   z-index: 100;
 }
 
+/* Logo */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
-.bookIcon {
-  font-size: 2rem;
-}
-
+.bookIcon { font-size: 2rem; }
 .logoText {
   font-size: 1.8rem;
   font-weight: bold;
 }
 
+/* Main nav */
 .nav ul {
   display: flex;
   list-style: none;
@@ -33,37 +32,37 @@
   margin: 0;
   padding: 0;
 }
-
 .nav a {
   color: white;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
 }
-
-.nav a:hover {
-  color: #f39c12;
+.nav a:hover { color: #f39c12; }
+.active {
+  color: #f39c12 !important;
+  border-bottom: 2px solid #f39c12;
 }
 
+/* Right side: search + cart + auth */
 .searchCart {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
+/* Search box */
 .searchBox {
   display: flex;
   background: white;
   border-radius: 5px;
   overflow: hidden;
 }
-
 .searchBox input {
   border: none;
   padding: 8px 12px;
   width: 200px;
 }
-
 .searchBox button {
   border: none;
   background: #f39c12;
@@ -72,44 +71,7 @@
   cursor: pointer;
 }
 
-.userActions {
-  display: flex;
-  gap: 15px;
-}
-
-.userActions button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.userActions button:hover {
-  color: #f39c12;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .header {
-    flex-direction: column;
-    gap: 20px;
-    padding: 15px;
-  }
-  .nav ul {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .searchBox input {
-    width: 120px;
-  }
-}
-.active {
-  color: #f39c12 !important;
-  border-bottom: 2px solid #f39c12;
-}
-
+/* Cart */
 .cartBtn {
   position: relative;
   background: none;
@@ -118,7 +80,6 @@
   font-size: 1.3rem;
   cursor: pointer;
 }
-
 .badge {
   position: absolute;
   top: -6px;
@@ -131,4 +92,87 @@
   font-weight: 700;
 }
 
-/* keep existing .header, .nav etc. */
+/* Auth area */
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Logged-in user chip */
+.userBadge {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Logout button (orange CTA) */
+.logoutBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f39c12;
+  color: #1f2937;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.04s ease;
+}
+.logoutBtn:hover {
+  filter: brightness(0.98);
+  color: #1f2937;
+}
+.logoutBtn:active { transform: translateY(1px); }
+.logoutText { display: inline-block; }
+
+/* Logged-out state links */
+.loginLink {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.loginLink:hover { text-decoration: underline; }
+
+.registerLink {
+  color: #1f2937;
+  background: #f39c12;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: filter 0.2s ease, transform 0.04s ease;
+}
+.registerLink:hover { filter: brightness(0.98); }
+.registerLink:active { transform: translateY(1px); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    gap: 20px;
+    padding: 15px;
+  }
+  .nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .searchBox input { width: 120px; }
+}
+
+@media (max-width: 640px) {
+  .userBadge { display: none; }  /* compact on small screens */
+  .logoutText { display: none; } /* only show icon */
+}

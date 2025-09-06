@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useLogin } from '../../hooks/useLogin';
 import styles from './Login.module.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { user, authReady } = useAuthContext();
+  const { login, isLoading, error } = useLogin();
+
   const [data, setData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
+
+  // 🚨 Redirect if already logged in
+  useEffect(() => {
+    if (authReady && user) {
+      navigate('/');
+    }
+  }, [authReady, user, navigate]);
 
   const handleChange = (e) =>
     setData((d) => ({ ...d, [e.target.name]: e.target.value }));
@@ -13,21 +25,19 @@ export default function Login() {
   const validate = () => {
     const e = {};
     if (!data.email.trim()) e.email = 'ইমেইল লিখুন';
-    else if (!/^\S+@\S+\.\S+$/.test(data.email))
-      e.email = 'সঠিক ইমেইল লিখুন';
+    else if (!/^\S+@\S+\.\S+$/.test(data.email)) e.email = 'সঠিক ইমেইল লিখুন';
     if (!data.password) e.password = 'পাসওয়ার্ড দিন';
     return e;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const v = validate();
     setErrors(v);
     if (Object.keys(v).length) return;
 
-    /* backend later … */
-    localStorage.setItem('demoUser', JSON.stringify({ email: data.email }));
-    navigate('/'); // pretend-login, then go home
+    const res = await login({ email: data.email, password: data.password })
+    if (res.ok) navigate('/');
   };
 
   return (
@@ -46,9 +56,7 @@ export default function Login() {
               value={data.email}
               onChange={handleChange}
             />
-            {errors.email && (
-              <span className={styles.error}>{errors.email}</span>
-            )}
+            {errors.email && <span className={styles.error}>{errors.email}</span>}
           </label>
 
           <label className={styles.label}>
@@ -61,17 +69,17 @@ export default function Login() {
               value={data.password}
               onChange={handleChange}
             />
-            {errors.password && (
-              <span className={styles.error}>{errors.password}</span>
-            )}
+            {errors.password && <span className={styles.error}>{errors.password}</span>}
           </label>
 
-          <button type="submit" className={styles.submit}>
-            লগইন
+          {error && <div className={styles.error}>{error}</div>}
+
+          <button type="submit" className={styles.submit} disabled={isLoading}>
+            {isLoading ? 'লগইন হচ্ছে...' : 'লগইন'}
           </button>
 
           <p className={styles.muted}>
-            অ্যাকাউন্ট নেই? <Link to="#">রেজিস্টার</Link>
+            অ্যাকাউন্ট নেই? <Link to="/register">রেজিস্টার</Link>
           </p>
         </form>
       </div>
