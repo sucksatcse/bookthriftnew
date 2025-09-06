@@ -10,8 +10,10 @@ import Contact from './pages/Contact/Contact';
 import Donation from './pages/Donation/Donation';
 import ProductList from './pages/ProductList/ProductList';
 import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
 import Cart from './pages/Cart/Cart';
 
+import ProtectedRoute from './components/ProtectedRoute';  // 🔐 add ProtectedRoute
 import './styles/App.css';
 
 function App() {
@@ -24,10 +26,28 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/donation" element={<Donation />} />
+              
+              {/* 🔐 Protected routes */}
+              <Route
+                path="/donation"
+                element={
+                  <ProtectedRoute>
+                    <Donation />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <Cart />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route path="/product-list" element={<ProductList />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           </main>
           <Footer />
