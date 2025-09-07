@@ -12,6 +12,8 @@ import ProductList from './pages/ProductList/ProductList';
 import Login from './pages/Login/Login';
 import Cart from './pages/Cart/Cart';
 
+import BookDetails from './pages/BookDetails/BookDetails'; // ✅ NEW
+
 import './styles/App.css';
 
 function App() {
@@ -28,6 +30,7 @@ function App() {
               <Route path="/product-list" element={<ProductList />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/books/:id" element={<BookDetails />} /> {/* ✅ NEW */}
             </Routes>
           </main>
           <Footer />

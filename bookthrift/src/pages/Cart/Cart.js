@@ -24,7 +24,7 @@ export default function Cart() {
 
       <div className={styles.table}>
         {items.map((b) => (
-          <div key={b.id} className={styles.row}>
+          <div key={b._id || b.id} className={styles.row}>
             <div className={styles.book}>
               <img src={b.image} alt={b.title} />
               <div>
@@ -34,22 +34,41 @@ export default function Cart() {
             </div>
 
             <div className={styles.qty}>
-              <button onClick={() => dec(b.id)} aria-label="minus">
+              {/* ➖ Minus button */}
+              <button
+                onClick={() => dec(b._id || b.id)}
+                aria-label="minus"
+                disabled={b.qty <= 1}
+              >
                 <FaMinus />
               </button>
+
               <span>{b.qty}</span>
-              <button onClick={() => inc(b.id)} aria-label="plus">
+
+              {/* ➕ Plus button with stock check */}
+              <button
+                onClick={() => {
+                  if (b.qty >= b.stock) {
+                    alert("স্টকে অতিরিক্ত কপি যোগ করা যাচ্ছে না");
+                  } else {
+                    inc(b._id || b.id);
+                  }
+                }}
+                aria-label="plus"
+              >
                 <FaPlus />
               </button>
             </div>
 
+            {/* 💰 Price Display */}
             <div className={styles.price}>
               {(parseFloat(b.price) * b.qty).toFixed(2)} ৳
             </div>
 
+            {/* 🗑 Remove Button */}
             <button
               className={styles.remove}
-              onClick={() => removeItem(b.id)}
+              onClick={() => removeItem(b._id || b.id)}
               aria-label="remove"
             >
               <FaTrash />
@@ -58,6 +77,7 @@ export default function Cart() {
         ))}
       </div>
 
+      {/* Footer: Total & Checkout */}
       <div className={styles.footer}>
         <div className={styles.total}>
           মোট: <span>{totalPrice.toFixed(2)} ৳</span>

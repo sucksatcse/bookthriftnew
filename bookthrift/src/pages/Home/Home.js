@@ -1,44 +1,30 @@
-import React from 'react';
+// Home.js
+import React, { useEffect, useState } from 'react';
 import styles from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import BookCard from '../../components/BookCard/BookCard';
 import FeatureCard from '../../components/FeatureCard/FeatureCard';
 import TestimonialCard from '../../components/TestimonialCard/TestimonialCard';
 import { FaBook, FaMoneyBill, FaBell, FaTruck } from 'react-icons/fa';
 
-const featuredBooks = [
-  {
-    id: 1,
-    title: "লাল সালু",
-    author: "সৈয়দ ওয়ালীউল্লাহ",
-    price: "২৫০ টাকা",
-    image: "https://covers.openlibrary.org/b/id/10523338-L.jpg"
-  },
-  {
-    id: 2,
-    title: "পদ্মা নদীর মাঝি",
-    author: "মানিক বন্দ্যোপাধ্যায়",
-    price: "৩০০ টাকা",
-    image: "https://covers.openlibrary.org/b/id/1090458-L.jpg"
-  },
-  {
-    id: 3,
-    title: "হাজার বছর ধরে",
-    author: "জহির রায়হান",
-    price: "২০০ টাকা",
-    image: "https://covers.openlibrary.org/b/id/10523336-L.jpg"
-  },
-  {
-    id: 4,
-    title: "কবি",
-    author: "রবীন্দ্রনাথ ঠাকুর",
-    price: "১৮০ টাকা",
-    image: "https://covers.openlibrary.org/b/id/10523337-L.jpg"
-  }
-];
-
 function Home() {
   const navigate = useNavigate();
+  const [featuredBooks, setFeaturedBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/books')
+      .then((res) => {
+        // ✅ Show first 4 books
+        setFeaturedBooks(res.data.slice(0, 4));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching featured books:", err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className={styles.homePage}>
@@ -71,9 +57,15 @@ function Home() {
       <section className={styles.featuredBooks}>
         <h2>জনপ্রিয় বইসমূহ</h2>
         <div className={styles.bookGrid}>
-          {featuredBooks.map(book => (
-            <BookCard key={book.id} book={book} />
-          ))}
+          {loading ? (
+            <p>লোড হচ্ছে...</p>
+          ) : featuredBooks.length === 0 ? (
+            <p>কোনো বই পাওয়া যায়নি</p>
+          ) : (
+            featuredBooks.map(book => (
+              <BookCard key={book._id} book={book} />
+            ))
+          )}
         </div>
       </section>
 

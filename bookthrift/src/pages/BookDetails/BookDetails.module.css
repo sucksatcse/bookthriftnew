@@ -1,0 +1,71 @@
+.bookDetails {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
+  gap: 2rem;
+  background: #fffdfa;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.imageSection {
+  flex: 1 1 300px;
+  max-width: 350px;
+}
+
+.imageSection img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.infoSection {
+  flex: 2 1 400px;
+}
+
+.author {
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  color: orange;
+}
+
+.staticRating {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: green;
+}
+
+.cartButton {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  background: #ffb703;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.cartButton:hover {
+  background: #fb8500;
+}
