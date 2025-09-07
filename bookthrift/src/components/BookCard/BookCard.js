@@ -7,15 +7,23 @@ import {
 } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
 import styles from './BookCard.module.css';
+import { Link } from 'react-router-dom'; // ✅ NEW
 
 function BookCard({ book }) {
-  const { addToCart } = useCart();
+  const { items, addToCart } = useCart();
 
-  /* book MUST have id, price (string or number) */
+  const handleAddToCart = () => {
+    addToCart(book);
+  };
+
   return (
     <div className={styles.bookCard}>
-      <img src={book.image} alt={book.title} />
+      <Link to={`/books/${book._id || book.id}`}>
+        <img src={book.image} alt={book.title} />
+      </Link>
+
       <h3>{book.title}</h3>
+
       <p className={styles.author}>{book.author}</p>
       <p className={styles.price}>{book.price} ৳</p>
 
@@ -24,7 +32,7 @@ function BookCard({ book }) {
           <FaHeart />
         </button>
 
-        <button onClick={() => addToCart(book)} title="Cart এ যোগ করুন">
+        <button onClick={handleAddToCart} title="Cart এ যোগ করুন">
           <FaShoppingCart />
         </button>
 

@@ -6,7 +6,7 @@ const DonationForm = ({ onSuccess }) => {
     name: "",
     email: "",
     bookTitle: "",
-    amount: "", // added amount field
+    amount: "",
   });
 
   const handleChange = (e) => {
@@ -17,22 +17,21 @@ const DonationForm = ({ onSuccess }) => {
     e.preventDefault();
 
     if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
-      alert("Please enter a valid donation amount greater than 0.");
+      alert("⚠️ দয়া করে একটি বৈধ অনুদানের পরিমাণ লিখুন (১ বা তার বেশি)।");
       return;
     }
 
     try {
-      // Convert amount to number
       const payload = { ...formData, amount: Number(formData.amount) };
-
       await API.post("/donations", payload);
-      alert("✅ Donation submitted successfully!");
+      alert("✅ অনুদান সফলভাবে জমা হয়েছে!");
 
-      setFormData({ name: "", email: "", bookTitle: "", amount: "" }); // reset form
+      setFormData({ name: "", email: "", bookTitle: "", amount: "" });
+
       if (onSuccess) onSuccess();
     } catch (error) {
       console.error("Donation submission failed:", error);
-      alert("❌ Failed to submit donation");
+      alert("❌ অনুদান জমা দেওয়া যায়নি!");
     }
   };
 
@@ -41,7 +40,7 @@ const DonationForm = ({ onSuccess }) => {
       <input
         type="text"
         name="name"
-        placeholder="Your Name"
+        placeholder="আপনার নাম"
         value={formData.name}
         onChange={handleChange}
         style={styles.input}
@@ -50,7 +49,7 @@ const DonationForm = ({ onSuccess }) => {
       <input
         type="email"
         name="email"
-        placeholder="Your Email"
+        placeholder="আপনার ইমেইল"
         value={formData.email}
         onChange={handleChange}
         style={styles.input}
@@ -59,7 +58,7 @@ const DonationForm = ({ onSuccess }) => {
       <input
         type="text"
         name="bookTitle"
-        placeholder="Book Title"
+        placeholder="বইয়ের নাম"
         value={formData.bookTitle}
         onChange={handleChange}
         style={styles.input}
@@ -68,14 +67,14 @@ const DonationForm = ({ onSuccess }) => {
       <input
         type="number"
         name="amount"
-        placeholder="Donation Amount"
+        placeholder="অনুদানের পরিমাণ"
         value={formData.amount}
         onChange={handleChange}
         style={styles.input}
         required
         min="1"
       />
-      <button type="submit" style={styles.button}>Donate</button>
+      <button type="submit" style={styles.button}>অনুদান দিন</button>
     </form>
   );
 };
@@ -101,6 +100,8 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+    fontSize: "16px",
+    fontWeight: "bold",
   },
 };
 

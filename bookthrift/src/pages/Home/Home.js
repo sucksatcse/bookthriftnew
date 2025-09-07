@@ -1,28 +1,39 @@
-import React, { useEffect } from 'react'
-import styles from './Home.module.css'
-import { useNavigate, useLocation } from 'react-router-dom'
-import BookCard from '../../components/BookCard/BookCard'
-import FeatureCard from '../../components/FeatureCard/FeatureCard'
-import TestimonialCard from '../../components/TestimonialCard/TestimonialCard'
-import { FaBook, FaMoneyBill, FaBell, FaTruck } from 'react-icons/fa'
-import { toast } from 'react-toastify'
-
-const featuredBooks = [
-  { id: 1, title: "লাল সালু", author: "সৈয়দ ওয়ালীউল্লাহ", price: "২৫০ টাকা", image: "https://covers.openlibrary.org/b/id/10523338-L.jpg" },
-  { id: 2, title: "পদ্মা নদীর মাঝি", author: "মানিক বন্দ্যোপাধ্যায়", price: "৩০০ টাকা", image: "https://covers.openlibrary.org/b/id/1090458-L.jpg" },
-  { id: 3, title: "হাজার বছর ধরে", author: "জহির রায়হান", price: "২০০ টাকা", image: "https://covers.openlibrary.org/b/id/10523336-L.jpg" },
-  { id: 4, title: "কবি", author: "রবীন্দ্রনাথ ঠাকুর", price: "১৮০ টাকা", image: "https://covers.openlibrary.org/b/id/10523337-L.jpg" }
-];
+// Home.js
+import React, { useEffect, useState } from 'react';
+import styles from './Home.module.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import BookCard from '../../components/BookCard/BookCard';
+import FeatureCard from '../../components/FeatureCard/FeatureCard';
+import TestimonialCard from '../../components/TestimonialCard/TestimonialCard';
+import { FaBook, FaMoneyBill, FaBell, FaTruck } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 function Home() {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [featuredBooks, setFeaturedBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // ✅ Show login message toast
   useEffect(() => {
     if (location.state?.msg) {
-      toast.info(location.state.msg, { autoClose: 3000 })
+      toast.info(location.state.msg, { autoClose: 3000 });
     }
-  }, [location])
+  }, [location]);
+
+  // ✅ Load books on mount
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/books')
+      .then((res) => {
+        setFeaturedBooks(res.data.slice(0, 4)); // show first 4
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching featured books:", err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className={styles.homePage}>
@@ -55,9 +66,15 @@ function Home() {
       <section className={styles.featuredBooks}>
         <h2>জনপ্রিয় বইসমূহ</h2>
         <div className={styles.bookGrid}>
-          {featuredBooks.map(book => (
-            <BookCard key={book.id} book={book} />
-          ))}
+          {loading ? (
+            <p>📦 লোড হচ্ছে...</p>
+          ) : featuredBooks.length === 0 ? (
+            <p>❌ কোনো বই পাওয়া যায়নি।</p>
+          ) : (
+            featuredBooks.map((book) => (
+              <BookCard key={book._id} book={book} />
+            ))
+          )}
         </div>
       </section>
 
@@ -70,7 +87,7 @@ function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

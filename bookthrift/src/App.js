@@ -13,7 +13,9 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Cart from './pages/Cart/Cart';
 
-import ProtectedRoute from './components/ProtectedRoute';  // 🔐 add ProtectedRoute
+import ProtectedRoute from './components/ProtectedRoute';  // 🔐 ProtectedRoute
+import BookDetails from './pages/BookDetails/BookDetails'; // 📚 Book Overview
+
 import './styles/App.css';
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
-              
+
               {/* 🔐 Protected routes */}
               <Route
                 path="/donation"
@@ -48,6 +50,7 @@ function App() {
               <Route path="/product-list" element={<ProductList />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/books/:id" element={<BookDetails />} />
             </Routes>
           </main>
           <Footer />
