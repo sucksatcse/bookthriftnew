@@ -4,26 +4,28 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// import routes
+// ✅ Route Imports
 import donationRoutes from './routes/donationRoutes.js';
 import bookRoutes from './routes/bookRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
-const app = express(); // ✅ Must come BEFORE app.use()
+const app = express();
 
 // ================== Middleware ==================
 app.use(cors());
 app.use(express.json());
 
-// ================== Test Route (Optional) ==================
-app.get("/", (req, res) => {
-  res.send("✅ API is running");
+// ================== Test Route (optional)
+app.get('/', (req, res) => {
+  res.send('✅ API is running');
 });
 
 // ================== Routes ==================
 app.use("/api/donations", donationRoutes);
-app.use("/api/books", bookRoutes); // ✅ Moved below 'app' declaration
+app.use("/api/books", bookRoutes);
+app.use("/api/user", userRoutes); 
 
 // ================== MongoDB Connection ==================
 mongoose
@@ -32,7 +34,7 @@ mongoose
     useUnifiedTopology: true
   })
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoBD Connection Error:", err));
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
 // ================== Start Server ==================
 const PORT = process.env.PORT || 5000;

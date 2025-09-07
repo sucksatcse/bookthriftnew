@@ -1,7 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Contact.module.css';
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+
+  const [responseMsg, setResponseMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  // Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setResponseMsg("");
+
+    try {
+      const res = await fetch("http://localhost:5000/api/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResponseMsg("✅ আপনার বার্তা সফলভাবে পাঠানো হয়েছে!");
+        setFormData({ name: "", email: "", subject: "", message: "" }); // reset form
+      } else {
+        setResponseMsg("❌ পাঠাতে ব্যর্থ: " + (data.error || "অনুগ্রহ করে আবার চেষ্টা করুন।"));
+      }
+    } catch (error) {
+      setResponseMsg("⚠️ সার্ভার ত্রুটি! অনুগ্রহ করে পরে আবার চেষ্টা করুন।");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.contactPage}>
       <h1>আমাদের সাথে যোগাযোগ করুন</h1>
@@ -13,29 +59,63 @@ function Contact() {
           <p><strong>ইমেইল:</strong> info@bookthrift.com</p>
           <p><strong>খোলার সময়:</strong> সকাল ৯টা - রাত ১০টা (প্রতিদিন)</p>
         </div>
+
         <div className={styles.contactForm}>
           <h2>বার্তা পাঠান</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
               <label htmlFor="name">আপনার নাম</label>
-              <input type="text" id="name" placeholder="আপনার নাম লিখুন" />
+              <input 
+                type="text" 
+                id="name" 
+                placeholder="আপনার নাম লিখুন" 
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="email">ইমেইল</label>
-              <input type="email" id="email" placeholder="আপনার ইমেইল লিখুন" />
+              <input 
+                type="email" 
+                id="email" 
+                placeholder="আপনার ইমেইল লিখুন" 
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="subject">বিষয়</label>
-              <input type="text" id="subject" placeholder="বিষয় লিখুন" />
+              <input 
+                type="text" 
+                id="subject" 
+                placeholder="বিষয় লিখুন" 
+                value={formData.subject}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="message">বার্তা</label>
-              <textarea id="message" rows="5" placeholder="আপনার বার্তা লিখুন"></textarea>
+              <textarea 
+                id="message" 
+                rows="5" 
+                placeholder="আপনার বার্তা লিখুন"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
-            <button type="submit" className={styles.submitBtn}>বার্তা পাঠান</button>
+            <button type="submit" className={styles.submitBtn} disabled={loading}>
+              {loading ? "পাঠানো হচ্ছে..." : "বার্তা পাঠান"}
+            </button>
           </form>
+
+          {responseMsg && <p className={styles.responseMsg}>{responseMsg}</p>}
         </div>
       </div>
+
       <div className={styles.mapContainer}>
         <h2>আমাদের অবস্থান</h2>
         <div className={styles.map}>

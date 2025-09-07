@@ -10,9 +10,11 @@ import Contact from './pages/Contact/Contact';
 import Donation from './pages/Donation/Donation';
 import ProductList from './pages/ProductList/ProductList';
 import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
 import Cart from './pages/Cart/Cart';
 
-import BookDetails from './pages/BookDetails/BookDetails'; // ✅ NEW
+import ProtectedRoute from './components/ProtectedRoute';  // 🔐 ProtectedRoute
+import BookDetails from './pages/BookDetails/BookDetails'; // 📚 Book Overview
 
 import './styles/App.css';
 
@@ -26,11 +28,29 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/donation" element={<Donation />} />
+
+              {/* 🔐 Protected routes */}
+              <Route
+                path="/donation"
+                element={
+                  <ProtectedRoute>
+                    <Donation />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <Cart />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route path="/product-list" element={<ProductList />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/books/:id" element={<BookDetails />} /> {/* ✅ NEW */}
+              <Route path="/register" element={<Register />} />
+              <Route path="/books/:id" element={<BookDetails />} />
             </Routes>
           </main>
           <Footer />
