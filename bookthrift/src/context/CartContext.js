@@ -1,9 +1,9 @@
-// CartContext.js
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const CartContext = createContext();
 
-/* -----------------  reducer ----------------- */
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD': {
@@ -59,14 +59,41 @@ const reducer = (state, action) => {
     case 'CLEAR':
       return { items: [] };
 
+    case 'SET_CART':
+      return { items: action.payload };
+
     default:
       return state;
   }
 };
 
-/* --------------  provider hook -------------- */
+
 export function CartProvider({ children }) {
+  const { user } = useAuthContext();
   const [state, dispatch] = useReducer(reducer, { items: [] });
+
+  
+  useEffect(() => {
+    if (user) {
+      const key = `cart_${user._id || user.email}`;
+      const savedCart = localStorage.getItem(key);
+      if (savedCart) {
+        dispatch({ type: 'SET_CART', payload: JSON.parse(savedCart) });
+      } else {
+        dispatch({ type: 'CLEAR' }); // start fresh cart if none saved
+      }
+    } else {
+      dispatch({ type: 'CLEAR' }); // clear cart on logout
+    }
+  }, [user]);
+
+  
+  useEffect(() => {
+    if (user) {
+      const key = `cart_${user._id || user.email}`;
+      localStorage.setItem(key, JSON.stringify(state.items));
+    }
+  }, [state.items, user]);
 
   const addToCart = (book) => dispatch({ type: 'ADD', payload: book });
   const removeItem = (id) => dispatch({ type: 'REMOVE', id });
@@ -75,10 +102,7 @@ export function CartProvider({ children }) {
   const clear = () => dispatch({ type: 'CLEAR' });
 
   const totalQty = state.items.reduce((s, i) => s + i.qty, 0);
-  const totalPrice = state.items.reduce(
-    (s, i) => s + i.qty * parseFloat(i.price),
-    0
-  );
+  const totalPrice = state.items.reduce((s, i) => s + i.qty * parseFloat(i.price), 0);
 
   return (
     <CartContext.Provider

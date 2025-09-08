@@ -1,4 +1,3 @@
-// src/components/Footer/Footer.js
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -51,7 +50,6 @@ function Footer() {
           <ul>
             <li><Link to="/">হোম</Link></li>
             <li><Link to="/product-list">বই সমূহ</Link></li>
-            <li><Link to="/cart">বিক্রয়</Link></li>
             <li><Link to="/contact">যোগাযোগ</Link></li>
           </ul>
         </div>
@@ -62,8 +60,6 @@ function Footer() {
           <ul>
             <li><Link to="/donation">দান করুন</Link></li>
             <li><Link to="/product-list">বই ক্রয়</Link></li>
-            <li><Link to="/cart">বই বিক্রয়</Link></li>
-            <li><Link to="/product-list">বই বিনিময়</Link></li>
             <li><a href="https://example.com/ebooks" target="_blank" rel="noopener noreferrer">ই-বুক</a></li>
           </ul>
         </div>
