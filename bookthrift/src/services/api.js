@@ -12,10 +12,15 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+// 🔒 Auth APIs
 export const loginUser = (email, password) =>
   API.post('/user/login', { email, password });
 
 export const registerUser = ({ name, email, contact, password }) =>
   API.post('/user/signup', { name, email, contact, password });
+
+// 🔍 Book Search API
+export const searchBooks = (query) =>
+  API.get(`/books/search?query=${encodeURIComponent(query)}`);
 
 export default API;
