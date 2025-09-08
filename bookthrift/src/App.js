@@ -13,8 +13,9 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Cart from './pages/Cart/Cart';
 
-import ProtectedRoute from './components/ProtectedRoute';  // 🔐 ProtectedRoute
-import BookDetails from './pages/BookDetails/BookDetails'; // 📚 Book Overview
+import ProtectedRoute from './components/ProtectedRoute';
+import BookDetails from './pages/BookDetails/BookDetails';
+import SearchPage from './pages/Search/SearchPage'; //  FIXED: Import & use
 
 import './styles/App.css';
 
@@ -28,8 +29,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
-
-              {/* 🔐 Protected routes */}
               <Route
                 path="/donation"
                 element={
@@ -46,11 +45,11 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
               <Route path="/product-list" element={<ProductList />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/books/:id" element={<BookDetails />} />
+              <Route path="/search" element={<SearchPage />} /> {/*  FIXED */}
             </Routes>
           </main>
           <Footer />

@@ -1,4 +1,5 @@
-import React from 'react';
+// src/components/Navbar/Navbar.js
+import React, { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FaBook, FaShoppingCart, FaUser, FaSearch, FaSignOutAlt } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
@@ -12,9 +13,19 @@ function Navbar() {
   const { logout } = useLogout();
   const navigate = useNavigate();
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm('');
+    }
   };
 
   const firstName =
@@ -56,21 +67,26 @@ function Navbar() {
 
       {/* search + cart + auth */}
       <div className={styles.searchCart}>
-        <div className={styles.searchBox}>
-          <input type="text" placeholder="বই খুঁজুন..." />
-          <button aria-label="Search">
+        {/* 🔍 Search */}
+        <form className={styles.searchBox} onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            placeholder="বই খুঁজুন..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button type="submit" aria-label="Search">
             <FaSearch />
           </button>
-        </div>
+        </form>
 
+        {/* 🛒 Cart & Auth */}
         <div className={styles.userActions}>
-          {/* Cart */}
           <Link to="/cart" className={styles.cartBtn} aria-label="Cart">
             <FaShoppingCart />
             {totalQty > 0 && <span className={styles.badge}>{totalQty}</span>}
           </Link>
 
-          {/* Auth: conditional output */}
           {!authReady ? null : user ? (
             <>
               <span className={styles.userBadge} title={user?.email}>

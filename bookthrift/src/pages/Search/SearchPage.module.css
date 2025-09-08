@@ -1,0 +1,29 @@
+.searchPageWrapper {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.heading {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.query {
+  color: #ff7e00;
+  font-weight: bold;
+}
+
+.status {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #444;
+  margin-top: 2rem;
+}
+
+.bookGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
